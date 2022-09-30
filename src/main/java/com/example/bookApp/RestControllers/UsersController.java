@@ -22,20 +22,26 @@ public class UsersController {
 
     @GetMapping("users")
     public ResponseEntity<List<User>> getAllUsers() throws Exception{
-        // retorno de usuarios ok
-        // manejo de errores  ok
+
         List<User> users = usersService.findAllUsers();
         return ResponseEntity.ok(users);
     }
     @PostMapping("users/user")
     public ResponseEntity addUser(@RequestBody UserDTO user) throws Exception{
-        User usercreted= usersService.createUser(user);
-        log.info(usercreted.toString());
+        usersService.createUser(user);
+
         return ResponseEntity.status(HttpStatus.CREATED).build();
+
     }
     @PutMapping("users/user/{id}")
     public ResponseEntity editUserById(@RequestBody UserDTO data,@PathVariable("id") Long id){
         User user = usersService.editUser(data,id);
         return ResponseEntity.ok(user);
+    }
+
+    @DeleteMapping("users/user/{id}")
+    public ResponseEntity deleteUser(@PathVariable("id") Long id){
+        usersService.deleteUserById(id);
+        return ResponseEntity.ok().build();
     }
 }

@@ -30,4 +30,10 @@ public class RolesController {
         List<Rol> rolesave= rolesService.saveRoles(roles.getRoles());
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
+
+    @DeleteMapping("roles/rol/{id}")
+    public ResponseEntity deleteRol(@PathVariable("id") Long id){
+        rolesService.deleteRol(id);
+        return ResponseEntity.accepted().build();
+    }
 }

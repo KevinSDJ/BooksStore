@@ -77,9 +77,18 @@ public class UsersServiceImpl implements UserService {
         Rol rol;
         if( usercount < 1 ){
             rol = rolRepository.findByName("ADMIN");
+            if(rol== null){
+                Rol nrol= new Rol("ADMIN");
+                rolRepository.save(nrol);
+            }
         }else{
             rol = rolRepository.findByName("USER");
+            if(rol== null){
+                Rol nrol= new Rol("USER");
+                rolRepository.save(nrol);
+            }
         }
+
         newUser.setRol(rol);
         if(userRepository.existByEmail(user.getEmail())){
             throw new EmailAlreadyExist("Este email ya se encuentra en uso");
@@ -91,27 +100,43 @@ public class UsersServiceImpl implements UserService {
     }
 
     @Override
-    public User createUser(UserDTO user) {
+    public void createUser(UserDTO user) {
+
         User nuser= user.getuserFromDto();
+        user.getRoles().forEach(e->{
+            Rol addrol= rolRepository.findByName(e);
+            nuser.setRol(addrol);
+        });
         if(userRepository.existByEmail(user.getEmail())){
             throw new EmailAlreadyExist("Email ocupado, elige otro gil");
         }
         if(userRepository.existByUsername(user.getUsername())){
             throw new UsernameAlreadyExist("Nombre de usuario en uso");
         }
-        return nuser;
+        userRepository.save(nuser);
     }
 
     @Override
     public User editUser(UserDTO data,Long id) {
-        User user= userRepository.findById(id).get();
-
-
-        return user;
+        User userdb= userRepository.findById(id).get();
+        userdb.setUsername(data.getUsername());
+        userdb.setEmail(data.getEmail());
+        userdb.getRoles().clear();
+        data.getRoles().forEach(e->{
+            Rol nrol= rolRepository.findByName(e);
+            userdb.setRol(nrol);
+        });
+        return userRepository.save(userdb);
     }
 
     @Override
     public void deleteUserById(Long id) {
+        try{
 
+            userRepository.deleteById(id);
+            
+        }catch (Exception e){
+            log.error(e.getMessage());
+        }
     }
 }

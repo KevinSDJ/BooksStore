@@ -1,8 +1,7 @@
 package com.example.bookApp.DTO;
 
-import com.example.bookApp.Entities.Rol;
-import com.example.bookApp.Entities.User;
 
+import com.example.bookApp.Entities.User;
 import java.util.List;
 import java.util.Set;
 
@@ -11,20 +10,22 @@ public class UserDTO {
     private String username;
     private String email;
     private String password;
-    private Set<Rol> roles;
+    private Set<String> roles;
 
-    public UserDTO(String username, String email, String password, Set<Rol> roles) {
+    // crear nuevo usuario desde admin
+    public UserDTO(String username, String email, String password, Set<String> roles) {
         this.username = username;
         this.email = email;
         this.password = password;
-        this.roles = roles;
+
     }
-    public UserDTO(String username, String email, Set<Rol> roles) {
+    // editar usuario
+    public UserDTO(String username, String email, Set<String> roles) {
         this.username = username;
         this.email = email;
         this.roles = roles;
     }
-
+    // registro
     public UserDTO(String username, String email, String password) {
         this.username = username;
         this.email = email;
@@ -66,23 +67,20 @@ public class UserDTO {
         this.password = password;
     }
 
-    public Set<Rol> getRoles() {
+    public Set<String> getRoles() {
         return roles;
     }
 
-    public void setRoles(Set<Rol> roles) {
+    public void setRoles(Set<String> roles) {
         this.roles = roles;
     }
-    public void setRol(Rol rol){
-        this.roles.add(rol);
-    }
+
 
     public User getuserFromDto(){
         User user = new User();
         user.setEmail(this.email);
         user.setUsername(this.username);
         user.setPassword(this.password);
-        user.setRoles(this.roles);
         return user;
     }
 

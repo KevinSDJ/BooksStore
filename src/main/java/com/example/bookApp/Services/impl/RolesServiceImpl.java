@@ -8,7 +8,9 @@ import com.example.bookApp.Services.RolesService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
@@ -49,12 +51,20 @@ public  class RolesServiceImpl implements RolesService {
     }
 
     @Override
-    public void deleteRol(String rolName) {
-
+    public void deleteRol(Long id) {
+        try{
+            rolRepository.deleteById(id);
+        }catch (Exception e){
+            throw new ResponseStatusException(HttpStatus.resolve(e.hashCode()),e.getMessage());
+        }
     }
 
     @Override
     public void deleteAllRoles() {
-
+        try{
+            rolRepository.deleteAll();
+        }catch (Exception e){
+            throw new ResponseStatusException(HttpStatus.resolve(e.hashCode()),e.getMessage());
+        }
     }
 }
