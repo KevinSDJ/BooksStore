@@ -1,16 +1,18 @@
 package com.example.bookApp.Services;
 
+import com.example.bookApp.DTO.RequestLoginDTO;
 import com.example.bookApp.DTO.UserDTO;
+import com.example.bookApp.DTO.UserNotRolAndPasswordDTO;
 import com.example.bookApp.Entities.User;
 
 import java.util.List;
 
 public interface UserService {
     List<User> findAllUsers();
-    User findUserByEmail(String email);
+    User login(RequestLoginDTO data);
     User findUserById(Long id);
-    User registerUser(UserDTO user);
+    User register(UserDTO user);
     User createUser(UserDTO user);
-    User editUser(User user);
+    User editUser(UserDTO user,Long id);
     void deleteUserById(Long id);
 }

@@ -10,6 +10,7 @@ import java.util.Set;
 public class User {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
     @Column(nullable = false,unique = true)
     private String username;
@@ -68,7 +69,10 @@ public class User {
         return roles;
     }
 
-    public void setRoles(Rol rol) {
+    public void setRoles(Set<Rol> roles) {
+        this.roles=roles;
+    }
+    public void setRol(Rol rol){
         this.roles.add(rol);
     }
 }

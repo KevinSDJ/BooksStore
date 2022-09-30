@@ -1,0 +1,24 @@
+app:
+  image: "bookApp"
+  build:
+    context: .
+  container_name: book-app
+  depends_on:
+    - db
+  environment:
+    - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/bookdb
+    - SPRING_DATASOURCE_USERNAME=exampleuser
+    - SPRING_DATASOURCE_PASSWORD=password
+    - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    - SPRING_JPA_SHOW_SQL=true
+  ports:
+    - 3004:3004
+db:
+  image: "postgres:13.1-alpine"
+  container_name: db
+  environment:
+    - POSTGRES_USER=exampleuser
+    - POSTGRES_PASSWORD=password
+    - POSTGRES_DB=bookdb
+
+
