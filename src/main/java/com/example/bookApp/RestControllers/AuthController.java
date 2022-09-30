@@ -33,8 +33,8 @@ public class AuthController {
 
 
     @PostMapping("login")
-    public ResponseEntity<RequestLoginDTO> login(@RequestBody RequestLoginDTO data) throws Exception{
+    public ResponseEntity<User> login(@RequestBody RequestLoginDTO data) throws Exception{
         User user= usersService.login(data);
-        return ResponseEntity.ok(data);
+        return ResponseEntity.ok(user);
     }
 }

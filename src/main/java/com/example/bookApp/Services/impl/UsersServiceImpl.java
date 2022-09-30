@@ -2,7 +2,6 @@ package com.example.bookApp.Services.impl;
 
 import com.example.bookApp.DTO.RequestLoginDTO;
 import com.example.bookApp.DTO.UserDTO;
-import com.example.bookApp.DTO.UserNotRolAndPasswordDTO;
 import com.example.bookApp.Entities.Rol;
 import com.example.bookApp.Entities.User;
 import com.example.bookApp.Exceptions.EmailAlreadyExist;
@@ -100,7 +99,7 @@ public class UsersServiceImpl implements UserService {
     }
 
     @Override
-    public void createUser(UserDTO user) {
+    public User createUser(UserDTO user) {
 
         User nuser= user.getuserFromDto();
         user.getRoles().forEach(e->{
@@ -113,7 +112,8 @@ public class UsersServiceImpl implements UserService {
         if(userRepository.existByUsername(user.getUsername())){
             throw new UsernameAlreadyExist("Nombre de usuario en uso");
         }
-        userRepository.save(nuser);
+        User us= userRepository.save(nuser);
+        return us;
     }
 
     @Override

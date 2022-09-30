@@ -2,7 +2,6 @@ package com.example.bookApp.DTO;
 
 
 import com.example.bookApp.Entities.User;
-import java.util.List;
 import java.util.Set;
 
 public class UserDTO {
