@@ -14,11 +14,9 @@ import com.example.bookApp.Services.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -76,16 +74,8 @@ public class UsersServiceImpl implements UserService {
         Rol rol;
         if( usercount < 1 ){
             rol = rolRepository.findByName("ADMIN");
-            if(rol== null){
-                Rol nrol= new Rol("ADMIN");
-                rolRepository.save(nrol);
-            }
         }else{
             rol = rolRepository.findByName("USER");
-            if(rol== null){
-                Rol nrol= new Rol("USER");
-                rolRepository.save(nrol);
-            }
         }
 
         newUser.setRol(rol);
@@ -139,4 +129,6 @@ public class UsersServiceImpl implements UserService {
             log.error(e.getMessage());
         }
     }
+
+    
 }
