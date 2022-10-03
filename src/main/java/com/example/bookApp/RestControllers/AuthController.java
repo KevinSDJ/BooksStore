@@ -7,14 +7,17 @@ import com.example.bookApp.DTO.UserDTO;
 import com.example.bookApp.Entities.User;
 import com.example.bookApp.Services.impl.UsersServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin(origins = "*",maxAge = 3600)
 @RestController
 @RequestMapping("/api/auth/")
 public class AuthController {
     @Autowired
     private UsersServiceImpl usersService;
+
     @GetMapping("register")
     public ResponseEntity<ResponseRegisterSchema> getRegisterSchema(){
         ResponseRegisterSchema registerSchema= new ResponseRegisterSchema();
@@ -33,8 +36,10 @@ public class AuthController {
 
 
     @PostMapping("login")
-    public ResponseEntity<User> login(@RequestBody RequestLoginDTO data) throws Exception{
-        User user= usersService.login(data);
-        return ResponseEntity.ok(user);
+    public ResponseEntity<String> login(@RequestBody RequestLoginDTO data) throws Exception{
+        String  token= usersService.login(data);
+
+
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(token);
     }
 }

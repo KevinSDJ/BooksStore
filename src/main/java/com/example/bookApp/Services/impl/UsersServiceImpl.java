@@ -11,9 +11,16 @@ import com.example.bookApp.Exceptions.UsernameAlreadyExist;
 import com.example.bookApp.Repositories.RolRepository;
 import com.example.bookApp.Repositories.UserRepository;
 import com.example.bookApp.Services.UserService;
+import com.example.bookApp.security.jwt.JwtUtil;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
@@ -30,6 +37,16 @@ public class UsersServiceImpl implements UserService {
 
     @Autowired
     private RolRepository rolRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private JwtUtil jwtUtil;
+
     @Override
     public List<User> findAllUsers() {
         List<User> users = new ArrayList<>();
@@ -55,16 +72,19 @@ public class UsersServiceImpl implements UserService {
     }
 
     @Override
-    public User login(RequestLoginDTO data) {
+    public String login(RequestLoginDTO data) {
         User user = userRepository.findByEmail(data.getEmail());
         if(user == null){
-            throw new NotFound("Register not found");
+            throw new NotFound("User not found invalid");
         }
-        if(!user.getPassword().contentEquals(data.getPassword())){
+        Boolean d= passwordEncoder.matches(data.getPassword(),user.getPassword());
+        if(d== false){
             throw new PasswordInvalid("Password invalid");
         }
-
-        return user;
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(data.getEmail(),data.getPassword()));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String token = jwtUtil.generateToken(authentication);
+        return token;
     }
 
     @Override
@@ -77,7 +97,7 @@ public class UsersServiceImpl implements UserService {
         }else{
             rol = rolRepository.findByName("USER");
         }
-
+        newUser.setPassword(passwordEncoder.encode(user.getPassword()));
         newUser.setRol(rol);
         if(userRepository.existByEmail(user.getEmail())){
             throw new EmailAlreadyExist("Este email ya se encuentra en uso");
@@ -92,6 +112,7 @@ public class UsersServiceImpl implements UserService {
     public User createUser(UserDTO user) {
 
         User nuser= user.getuserFromDto();
+        nuser.setPassword(passwordEncoder.encode(user.getPassword()));
         user.getRoles().forEach(e->{
             Rol addrol= rolRepository.findByName(e);
             nuser.setRol(addrol);
