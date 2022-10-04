@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
@@ -30,6 +31,9 @@ public class config extends WebSecurityConfigurerAdapter {
 
     @Autowired
     JwtAuthEntryPoint unauthorized;
+
+    @Autowired
+    CustomAccessDenied accessDenied;
 
     @Bean 
     public PasswordEncoder passwordEncoder(){
@@ -50,6 +54,9 @@ public class config extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
        http.cors().and().csrf().disable()
+       .exceptionHandling()
+       .accessDeniedHandler(accessDenied)
+       .authenticationEntryPoint(unauthorized).and()
        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
        .authorizeHttpRequests()
        .antMatchers("/api/auth/**").permitAll()
@@ -58,7 +65,7 @@ public class config extends WebSecurityConfigurerAdapter {
        .and()
        .httpBasic();
 
-       //http.addFilterBefore(authenticationJwtFilter(), UsernamePasswordAuthenticationFilter.class);
+       http.addFilterBefore(authenticationJwtFilter(), UsernamePasswordAuthenticationFilter.class);
 
     }
 

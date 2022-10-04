@@ -1,6 +1,7 @@
 package com.example.bookApp.Services.impl;
 
 import com.example.bookApp.DTO.RequestLoginDTO;
+import com.example.bookApp.DTO.TokenResponseDTO;
 import com.example.bookApp.DTO.UserDTO;
 import com.example.bookApp.Entities.Rol;
 import com.example.bookApp.Entities.User;
@@ -12,7 +13,6 @@ import com.example.bookApp.Repositories.RolRepository;
 import com.example.bookApp.Repositories.UserRepository;
 import com.example.bookApp.Services.UserService;
 import com.example.bookApp.security.jwt.JwtUtil;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,7 +72,7 @@ public class UsersServiceImpl implements UserService {
     }
 
     @Override
-    public String login(RequestLoginDTO data) {
+    public TokenResponseDTO login(RequestLoginDTO data) {
         User user = userRepository.findByEmail(data.getEmail());
         if(user == null){
             throw new NotFound("User not found invalid");
@@ -84,7 +84,7 @@ public class UsersServiceImpl implements UserService {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(data.getEmail(),data.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = jwtUtil.generateToken(authentication);
-        return token;
+        return new TokenResponseDTO(user.getUsername(),user.getEmail(),token);
     }
 
     @Override

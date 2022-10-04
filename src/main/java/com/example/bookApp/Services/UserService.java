@@ -1,6 +1,7 @@
 package com.example.bookApp.Services;
 
 import com.example.bookApp.DTO.RequestLoginDTO;
+import com.example.bookApp.DTO.TokenResponseDTO;
 import com.example.bookApp.DTO.UserDTO;
 import com.example.bookApp.Entities.User;
 import java.util.List;
@@ -8,7 +9,7 @@ import java.util.List;
 
 public interface UserService {
     List<User> findAllUsers();
-    String login(RequestLoginDTO data);
+    TokenResponseDTO login(RequestLoginDTO data);
     User findUserById(Long id);
     User register(UserDTO user);
     User createUser(UserDTO user);

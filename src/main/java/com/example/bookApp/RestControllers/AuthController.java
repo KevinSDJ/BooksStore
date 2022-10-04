@@ -3,6 +3,7 @@ package com.example.bookApp.RestControllers;
 import com.example.bookApp.DTO.RequestLoginDTO;
 import com.example.bookApp.DTO.ResponseLoginSchemaDTO;
 import com.example.bookApp.DTO.ResponseRegisterSchema;
+import com.example.bookApp.DTO.TokenResponseDTO;
 import com.example.bookApp.DTO.UserDTO;
 import com.example.bookApp.Entities.User;
 import com.example.bookApp.Services.impl.UsersServiceImpl;
@@ -36,10 +37,8 @@ public class AuthController {
 
 
     @PostMapping("login")
-    public ResponseEntity<String> login(@RequestBody RequestLoginDTO data) throws Exception{
-        String  token= usersService.login(data);
-
-
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(token);
+    public ResponseEntity<TokenResponseDTO> login(@RequestBody RequestLoginDTO data) throws Exception{
+        TokenResponseDTO tokenResponse= usersService.login(data);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(tokenResponse);
     }
 }

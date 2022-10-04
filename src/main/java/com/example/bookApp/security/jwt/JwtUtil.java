@@ -3,10 +3,13 @@ package com.example.bookApp.security.jwt;
 import java.io.Serializable;
 import java.security.Key;
 import java.util.Date;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
+
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -23,12 +26,9 @@ public class JwtUtil implements Serializable{
     
     
     public String generateToken(Authentication authentication){
-        System.out.println(authentication.getName());
-        System.out.println(authentication.getAuthorities());
         String authorities= authentication.getAuthorities()
         .stream().map(GrantedAuthority::getAuthority)
         .collect(Collectors.joining(","));
-
         return Jwts.builder()
         .setSubject(authentication.getName())
         .claim("ROLES_", authorities)
@@ -37,5 +37,18 @@ public class JwtUtil implements Serializable{
         .signWith(key)
         .compact();
         
+    }
+
+    public String getEmailFromToken(String token){
+        return getClaimFromToken(token,Claims::getSubject);
+    }
+
+    public <T> T getClaimFromToken (String token ,Function<Claims, T> resolver){
+        final Claims claims= allClaimsFromToken(token);
+        return resolver.apply(claims);
+    }
+    
+    public Claims allClaimsFromToken(String token) {
+        return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
     }
 }
