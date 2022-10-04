@@ -7,6 +7,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Claims;
@@ -31,7 +32,7 @@ public class JwtUtil implements Serializable{
         .collect(Collectors.joining(","));
         return Jwts.builder()
         .setSubject(authentication.getName())
-        .claim("ROLES_", authorities)
+        .claim("roles", authorities)
         .setIssuedAt(new Date(System.currentTimeMillis()))
         .setExpiration(new Date(System.currentTimeMillis() + VALIDITY_TOKEN* 1000))
         .signWith(key)
@@ -50,5 +51,19 @@ public class JwtUtil implements Serializable{
     
     public Claims allClaimsFromToken(String token) {
         return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
+    }
+
+    public Boolean isExpired(String token){
+        final Date expiration = getExpirationToken(token);
+        return expiration.before(new Date());
+    }
+
+    public Date getExpirationToken(String token){
+        return getClaimFromToken(token, Claims::getExpiration);
+    }
+    
+    public Boolean validate(String token,UserDetails userDetails){
+        final String email= getEmailFromToken(token);
+        return email.equals(userDetails.getUsername()) && !isExpired(token);
     }
 }
