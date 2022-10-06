@@ -1,6 +1,5 @@
 package com.example.bookApp.Repositories;
-
-import com.example.bookApp.DTO.UserNotRolAndPasswordDTO;
+import com.example.bookApp.projections.UsersPr;
 import com.example.bookApp.Entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -12,8 +11,8 @@ import java.util.List;
 @Repository
 public interface UserRepository extends JpaRepository<User,Long> {
     User findByEmail(String email);
-    @Query(value = "SELECT u.email,u.username FROM users AS u",nativeQuery = true)
-    List<UserNotRolAndPasswordDTO> findAllLimitData();
+    @Query(value = "SELECT  u.id,u.email,u.username FROM users AS u",nativeQuery = true)
+    List<UsersPr> findAllNotRolPassword();
 
     @Query(
             value = "SELECT CAST( CASE WHEN COUNT(*)>0 THEN 1 ELSE 0 END AS BIT) FROM users AS r WHERE r.email = :email",nativeQuery = true)

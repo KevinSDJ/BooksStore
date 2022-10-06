@@ -26,7 +26,7 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
+import com.example.bookApp.projections.UsersPr;;
 
 @Service
 @Transactional
@@ -48,10 +48,10 @@ public class UsersServiceImpl implements UserService {
     private JwtUtil jwtUtil;
 
     @Override
-    public List<User> findAllUsers() {
-        List<User> users = new ArrayList<>();
+    public List<UsersPr> findAllUsers() {
+        List<UsersPr> users = new ArrayList<>();
         try{
-            users=userRepository.findAll();
+            users=userRepository.findAllNotRolPassword();
         }catch (Exception e){
             log.error("Fail process intern findAllUsers:{}" ,e.getMessage());
         }

@@ -4,11 +4,12 @@ import com.example.bookApp.DTO.RequestLoginDTO;
 import com.example.bookApp.DTO.TokenResponseDTO;
 import com.example.bookApp.DTO.UserDTO;
 import com.example.bookApp.Entities.User;
+import com.example.bookApp.projections.UsersPr;
 import java.util.List;
 
 
 public interface UserService {
-    List<User> findAllUsers();
+    List<UsersPr> findAllUsers();
     TokenResponseDTO login(RequestLoginDTO data);
     User findUserById(Long id);
     User register(UserDTO user);

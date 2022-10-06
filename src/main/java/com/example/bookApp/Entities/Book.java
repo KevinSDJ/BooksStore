@@ -1,6 +1,12 @@
 package com.example.bookApp.Entities;
-
-import javax.persistence.*;
+import javax.persistence.OneToOne;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.MapsId;
+import javax.persistence.Column;
 
 @Entity
 @Table(name = "books")
@@ -16,16 +22,16 @@ public class Book {
     @Column(nullable = false,length = 40)
     private Double price;
     @Column(name = "book_cover")
+    @OneToOne(optional=false) @MapsId
     private String bookCover;
 
     public Book() {
     }
 
-    public Book(String title, String sinopsis, Double price, String bookCover) {
+    public Book(String title, String sinopsis, Double price) {
         this.title = title;
         this.sinopsis = sinopsis;
         this.price = price;
-        this.bookCover = bookCover;
     }
 
 }
