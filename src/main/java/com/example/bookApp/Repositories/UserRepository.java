@@ -12,7 +12,6 @@ import java.util.List;
 @Repository
 public interface UserRepository extends JpaRepository<User,Long> {
     User findByEmail(String email);
-
     @Query(value = "SELECT u.email,u.username FROM users AS u",nativeQuery = true)
     List<UserNotRolAndPasswordDTO> findAllLimitData();
 

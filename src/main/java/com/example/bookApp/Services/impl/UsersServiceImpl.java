@@ -51,7 +51,7 @@ public class UsersServiceImpl implements UserService {
     public List<User> findAllUsers() {
         List<User> users = new ArrayList<>();
         try{
-            users= userRepository.findAll();
+            users=userRepository.findAll();
         }catch (Exception e){
             log.error("Fail process intern findAllUsers:{}" ,e.getMessage());
         }
