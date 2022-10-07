@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import com.example.bookApp.Entities.Rol;
 import com.example.bookApp.Repositories.RolRepository;
 
+
 @SpringBootApplication
 public class DemoApplication implements CommandLineRunner {
 	@Autowired
