@@ -1,28 +1,33 @@
-import { authService,login,register } from "../auth.service";
+import { AuthService,login,register } from "../auth.service";
+import axios from 'axios'
+const baseApi = import.meta.env.VITE_API_BASE
 
-
-class AuthServiceImpl implements authService {
+class AuthServiceImpl implements AuthService {
 
     constructor(){
         
     }
-    async(data: unknown, cb: unknown): Promise<void> {
-        throw new Error("Method not implemented.");
+    signIn(data: login, cb: Function) {
+        axios.post(baseApi+'/auth/login',data)
+        .then(r=>{
+            console.log(r)
+        })
+        .catch(error=>{
+            console.log(error)
+        })
     }
-    async signIn(data: login, cb: Function): Promise<void>{
-        let d= fetch("http://hdsadsa").then(r=>r.json())
-        await d
-        cb(d)
-        
-    };
-    async signUp(data: register, cb: Function): Promise<void>{
-        let d= fetch("http://hdsadsa").then(r=>r.json())
-        await d
-        cb(d)
-    };
-
+    signUp(data: register, cb: Function) {
+        axios.post(baseApi+"/auth/register",data)
+        .then(r=>{
+            cb(r)
+        })
+        .catch(error=>{
+            cb(error)
+        })
+    }
+    
 }
 
-export const AuthService= new AuthServiceImpl()
+export const authService= new AuthServiceImpl()
 
 

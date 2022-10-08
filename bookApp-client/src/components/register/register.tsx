@@ -1,43 +1,38 @@
-import {AuthService} from './../../services/implements/auth.serviceImpl'
+import {authService} from './../../services/implements/auth.serviceImpl'
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
+import CopyrightForm from '../shared/CopyrightForm';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import {AccountBalance} from '@mui/icons-material/';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import {useState} from 'react'
 
-
-
-function Copyright(props: any) {
-    return (
-      <Typography variant="body2" color="text.secondary" align="center" {...props}>
-        {'Copyright © '}
-        <Link color="inherit" href="https://mui.com/">
-          Your Website
-        </Link>{' '}
-        {new Date().getFullYear()}
-        {'.'}
-      </Typography>
-    );
-  }
   
-  const theme = createTheme();
+const theme = createTheme();
 
-export const Login= ():JSX.Element=>{
+
+  const Register= ():JSX.Element=>{
+    const [formvalues,setFormValues]= useState({
+      username:"",
+      email:"",
+      password:""
+    })
+    const handleChange=(event:React.ChangeEvent<HTMLInputElement|HTMLTextAreaElement>)=>{
+      console.log(event.target.value)
+      setFormValues(prev=>{return {...prev,[event.target.name]:event.target.value}})
+    }
+
+
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        const data = new FormData(event.currentTarget);
-        console.log({
-          email: data.get('email'),
-          password: data.get('password'),
-        });
+        authService.signUp(formvalues,(e:any)=>{console.log(e)})
+        setFormValues(prev=>{return{...prev,username:'',email:'',password:''}})
       };
     
       return (
@@ -53,17 +48,31 @@ export const Login= ():JSX.Element=>{
               }}
             >
               <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                <LockOutlinedIcon />
+                <AccountBalance/>
               </Avatar>
               <Typography component="h1" variant="h5">
-                Sign in
+                Sign Up
               </Typography>
-              <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+              <Box component="form" onSubmit={handleSubmit}  noValidate sx={{ mt: 1 }}>
+              <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="username"
+                  label="Username"
+                  name="username"
+                  value={formvalues.username}
+                  onChange={handleChange}
+                  autoComplete="username"
+                  autoFocus
+                />
                 <TextField
                   margin="normal"
                   required
                   fullWidth
                   id="email"
+                  value={formvalues.email}
+                  onChange={handleChange}
                   label="Email Address"
                   name="email"
                   autoComplete="email"
@@ -75,43 +84,38 @@ export const Login= ():JSX.Element=>{
                   fullWidth
                   name="password"
                   label="Password"
+                  value={formvalues.password}
+                  onChange={handleChange}
                   type="password"
                   id="password"
                   autoComplete="current-password"
                 />
-                <FormControlLabel
-                  control={<Checkbox value="remember" color="primary" />}
-                  label="Remember me"
-                />
+              
                 <Button
                   type="submit"
                   fullWidth
                   variant="contained"
                   sx={{ mt: 3, mb: 2 }}
                 >
-                  Sign In
+                  Sign Up
                 </Button>
                 <Grid container>
                   <Grid item xs>
                     <Link href="#" variant="body2">
-                      Forgot password?
+                      
                     </Link>
                   </Grid>
                   <Grid item>
-                    <Link href="#" variant="body2">
-                      {"Don't have an account? Sign Up"}
+                    <Link href="/auth" variant="body2">
+                      {"you are already registered? Sign In"}
                     </Link>
                   </Grid>
                 </Grid>
               </Box>
             </Box>
-            <Copyright sx={{ mt: 8, mb: 4 }} />
+            <CopyrightForm sx={{ mt: 8, mb: 4 }} />
           </Container>
         </ThemeProvider>
       );
 }
-
-
-
-
-
+export default Register

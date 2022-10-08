@@ -84,7 +84,15 @@ public class UsersServiceImpl implements UserService {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(data.getEmail(),data.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = jwtUtil.generateToken(authentication);
-        return new TokenResponseDTO(user.getUsername(),user.getEmail(),token);
+        TokenResponseDTO response= new TokenResponseDTO();
+        response.setUsername(user.getUsername());
+        response.setEmail(user.getEmail());
+        response.setToken(token);
+        user.getRoles().forEach(e->{
+            response.setRoles(e.getName());
+        });
+
+        return response;
     }
 
     @Override

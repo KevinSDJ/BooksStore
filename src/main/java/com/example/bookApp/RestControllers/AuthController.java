@@ -24,9 +24,9 @@ public class AuthController {
         return ResponseEntity.ok(registerSchema);
     }
     @PostMapping("register")
-    public ResponseEntity<String> register(@RequestBody UserDTO data) throws Exception{
+    public ResponseEntity<?> register(@RequestBody UserDTO data) throws Exception{
         usersService.register(data);
-        return ResponseEntity.status(HttpStatus.CREATED).body("User register");
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
     @GetMapping("login")
     public  ResponseEntity<ResponseLoginSchemaDTO> getLoginSchema(){

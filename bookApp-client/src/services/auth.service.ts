@@ -13,7 +13,7 @@ export type login={
 
 // servicio de authenticacion 
 
-export interface authService{
-    async (data:login,cb:Function):Promise<void>,
-    async (data:register,cb:Function):Promise<void>
+export interface AuthService {
+    signIn(data:login,cb:Function):void,
+    signUp(data:register,cb:Function):void
 }
