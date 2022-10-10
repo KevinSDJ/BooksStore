@@ -1,11 +1,11 @@
-import {Container} from '@mui/material'
+
 import {Outlet} from 'react-router-dom'
 
 const AuthLayout=()=>{
     return(
-        <Container maxWidth="lg" >
+        <div className='flex justify-center content-center bg-slate-700 w-full h-screen'>
             <Outlet/>
-        </Container>
+        </div>
     )
 }
 

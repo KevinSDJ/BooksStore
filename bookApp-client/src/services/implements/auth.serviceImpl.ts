@@ -10,10 +10,10 @@ class AuthServiceImpl implements AuthService {
     signIn(data: login, cb: Function) {
         axios.post(baseApi+'/auth/login',data)
         .then(r=>{
-            console.log(r)
+            cb(r)
         })
         .catch(error=>{
-            console.log(error)
+            cb(error)
         })
     }
     signUp(data: register, cb: Function) {
