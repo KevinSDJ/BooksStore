@@ -99,8 +99,10 @@ const CreateBook = () => {
                     </form>
                 </div>
             </div>
-            <div className="bg-slate-600 grow">
-                <img className="h-72" src={formValues.cover_front?formValues.cover_front:"#"} />
+            <div className="bg-slate-700 grow flex">
+                <div className="w-11/12 h-5/6 mx-auto self-center bg-lime-400">
+
+                </div>
             </div>
         </div>
 
