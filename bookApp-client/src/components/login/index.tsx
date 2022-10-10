@@ -40,6 +40,7 @@ const Login = (): JSX.Element => {
               <input 
               className="text-sm text-gray-500 px-4 py-3 rounded-lg w-full bg-gray-200 focus:bg-gray-100 border border-gray-200 focus:outline-none focus:border-purple-400"
               type={viewpass?'text':'password'}
+              placeholder={'*******'}
               required
               />
               <div 

@@ -1,11 +1,12 @@
+import CreateBook from "../../components/createBook"
 
 
 
 const AddBook=():JSX.Element=>{
 
     return (
-    <div >
-        
+    <div className="w-full">
+        <CreateBook/>
     </div>
     )
 }
