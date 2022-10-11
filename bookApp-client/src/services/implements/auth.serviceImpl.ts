@@ -1,6 +1,5 @@
 import { AuthService,login,register } from "../auth.service";
-import axios from 'axios'
-const baseApi = import.meta.env.VITE_API_BASE
+import{axiosInstance} from './../api'
 
 class AuthServiceImpl implements AuthService {
 
@@ -8,7 +7,7 @@ class AuthServiceImpl implements AuthService {
         
     }
     signIn(data: login, cb: Function) {
-        axios.post(baseApi+'/auth/login',data)
+        axiosInstance.post('/auth/login',data)
         .then(r=>{
             cb(r)
         })
@@ -17,7 +16,7 @@ class AuthServiceImpl implements AuthService {
         })
     }
     signUp(data: register, cb: Function) {
-        axios.post(baseApi+"/auth/register",data)
+        axiosInstance.post("/auth/register",data)
         .then(r=>{
             cb(r)
         })

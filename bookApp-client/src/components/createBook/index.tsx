@@ -1,13 +1,8 @@
 import { Link } from "react-router-dom"
 import { useState } from "react"
-
-type formV={
-    title?:string|null,
-    sinopsis?:string|null,
-    price?:number|null,
-    cover_front?:string|null
-}
-
+import {PreviewBook} from './preview_book_form'
+import { formV } from "./types"
+import { AdminService } from "../../services/implements/admin.serviceImpl"
 
 const CreateBook = () => {
     const [formValues,setFormValues] = useState<formV>({
@@ -25,24 +20,30 @@ const CreateBook = () => {
     const handleChangeFile=(event:React.ChangeEvent<HTMLInputElement>)=>{
         const reader= new FileReader()
         let file = event?.currentTarget?.files?.item(0)
+        console.log(file)
         if(file){
             reader.addEventListener("loadend",()=>{
                 if(reader?.result){
-                    setFormValues(prev=>{return{...prev,cover_front:reader.result?.toString()||""}})
+                    setFormValues(prev=>{return{...prev,cover_front:reader.result||""}})
                 }
             })
             reader.readAsDataURL(file)
+        }else{
+            setFormValues(prev=>{return{...prev,cover_front:''}})
         }
     }
-
+    const handleSubmit=(event:React.FormEvent<HTMLFormElement>)=>{
+        event.preventDefault()
+        AdminService.saveBook(formValues,()=>console.log("jeje soy un callback XP"))
+    }
 
     return (
-        <div className="flex flex-row w-full h-screen">
-            <div className="flex basis-2/8 items-center h-full overflow-auto justify-start" >
-                <div className="w-96  px-6 py-6">
+        <div className="flex flex-row justify-between w-full h-screen bg-slate-600">
+            <div className="flex basis-2/8 items-center h-full overflow-auto justify-start bg-gray-100" >
+                <div className="w-96 px-6 py-6">
                     <h1 className="text-xl font-semibold">Add book to inventory</h1>
                     <small className="text-gray-400">Please enter the data</small>
-                    <form className="mt-4">
+                    <form className="mt-4" onSubmit={handleSubmit}>
                         <div className="mb-3">
                             <label htmlFor="title" className="mb-2 block text-xs font-semibold">Title</label>
                             <input
@@ -58,7 +59,7 @@ const CreateBook = () => {
                             <label htmlFor="sinopsis" className="mb-2 block text-xs font-semibold">Sinopsis</label>
                             <textarea
                                 onChange={handleChange}
-                                maxLength={140}
+                                
                                 value={formValues.sinopsis||""}
                                 name="sinopsis"
                                 className="block w-full rounded-md border border-gray-300 focus:border-purple-700 focus:outline-none focus:ring-1 focus:ring-purple-700 py-1 px-1.5 text-gray-500" />
@@ -99,9 +100,9 @@ const CreateBook = () => {
                     </form>
                 </div>
             </div>
-            <div className="bg-slate-700 grow flex">
-                <div className="w-11/12 h-5/6 mx-auto self-center bg-lime-400">
-
+            <div className="basis-4/6 flex">
+                <div className="w-11/12 h-5/6 mx-auto self-center shadow-custom1">
+                    <PreviewBook {...formValues}/>
                 </div>
             </div>
         </div>
