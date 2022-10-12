@@ -9,8 +9,9 @@ const CreateBook = () => {
         title:'',
         sinopsis:'',
         price:0,
-        cover_front:''
+        cover_front:null
     })
+    
 
     const handleChange=(event:React.ChangeEvent<HTMLInputElement|HTMLTextAreaElement>)=>{
         setFormValues(prev=>{
@@ -20,21 +21,23 @@ const CreateBook = () => {
     const handleChangeFile=(event:React.ChangeEvent<HTMLInputElement>)=>{
         const reader= new FileReader()
         let file = event?.currentTarget?.files?.item(0)
-        console.log(file)
+        console.log(file?.name)
         if(file){
             reader.addEventListener("loadend",()=>{
-                if(reader?.result){
-                    setFormValues(prev=>{return{...prev,cover_front:reader.result||""}})
-                }
+                setFormValues(prev=>{return{...prev,cover_front:reader.result||null}})
+                
             })
             reader.readAsDataURL(file)
+
         }else{
-            setFormValues(prev=>{return{...prev,cover_front:''}})
+            
+            setFormValues(prev=>{return{...prev,cover_front:null}})
         }
     }
-    const handleSubmit=(event:React.FormEvent<HTMLFormElement>)=>{
+    const handleSubmit=(event:React.FormEvent<HTMLFormElement|HTMLFormControlsCollection>)=>{
         event.preventDefault()
-        AdminService.saveBook(formValues,()=>console.log("jeje soy un callback XP"))
+        AdminService.saveBook(formValues,()=>{console.log("soy un callback jeje")})
+        
     }
 
     return (
@@ -43,12 +46,13 @@ const CreateBook = () => {
                 <div className="w-96 px-6 py-6">
                     <h1 className="text-xl font-semibold">Add book to inventory</h1>
                     <small className="text-gray-400">Please enter the data</small>
-                    <form className="mt-4" onSubmit={handleSubmit}>
+                    <form className="mt-4" encType={"multipart/form-data"} onSubmit={handleSubmit}>
                         <div className="mb-3">
                             <label htmlFor="title" className="mb-2 block text-xs font-semibold">Title</label>
                             <input
                                 onChange={handleChange}
                                 type="text"
+                                
                                 maxLength={60}
                                 name="title"
                                 value={formValues.title||""}
@@ -102,7 +106,7 @@ const CreateBook = () => {
             </div>
             <div className="basis-4/6 flex">
                 <div className="w-11/12 h-5/6 mx-auto self-center shadow-custom1">
-                    <PreviewBook {...formValues}/>
+                    <PreviewBook {...formValues} />
                 </div>
             </div>
         </div>

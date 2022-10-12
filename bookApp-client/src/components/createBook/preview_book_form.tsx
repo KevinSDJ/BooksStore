@@ -1,5 +1,7 @@
 import ImageIcon from '/image_icon.webp'
 import { formV } from './types'
+import { useState ,useEffect} from 'react'
+
 
 
 export const PreviewBook=({cover_front,title,sinopsis,price}:formV)=>{

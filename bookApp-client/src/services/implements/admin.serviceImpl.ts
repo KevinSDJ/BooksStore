@@ -1,4 +1,4 @@
-
+import {axiosInstance} from './../api'
 
 export type dataFormValues={
     title?:string|null,
@@ -10,7 +10,8 @@ export type dataFormValues={
 
 export class AdminService {
     public static saveBook(data: dataFormValues, cb: Function): void {
-        console.log(data)
+        axiosInstance.post("/books/book",data)
+        
         cb()
     }
 }

@@ -2,7 +2,8 @@ package com.example.bookApp.DTO;
 
 import java.io.Serializable;
 
-import org.springframework.web.multipart.MultipartFile;
+
+
 
 public class BookDTO implements Serializable{
     private Long id;
@@ -10,12 +11,13 @@ public class BookDTO implements Serializable{
     private String sinopsis;
     private Double price;
     private String cover_path;
-    private MultipartFile file;
-    public MultipartFile getFile() {
-        return file;
+    private String cover_front;
+    
+    public String getCover_front() {
+        return cover_front;
     }
-    public void setFile(MultipartFile file) {
-        this.file = file;
+    public void setCover_front(String cover_front) {
+        this.cover_front = cover_front;
     }
     public String getCover_path() {
         return cover_path;
@@ -49,7 +51,9 @@ public class BookDTO implements Serializable{
     }
     @Override
     public String toString() {
-        return "BookDTO [id=" + id + ", title=" + title + ", sinopsis=" + sinopsis + ", price=" + price + "]";
+        return "BookDTO [id=" + id + ", title=" + title + ", sinopsis=" + sinopsis + ", price=" + price
+                + ", cover_path=" + cover_path + ", cover_front=" + cover_front + "]";
     }
+    
     
 }
