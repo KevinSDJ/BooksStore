@@ -27,7 +27,7 @@ public class ImageServiceImpl implements ImageService {
         // como puedo guardar la imagen?
         // pueder ser en el mismo formato base64?
         // seria tipo de archivo + tipo de codificacion+ nombre de archivo? sera la mejor manera?
-        // por ahora lo dejare asi ,ejemplo : image/png,base64,filenameExample
+        // o puedo guardar solo en nombre y servirlo como mvc
 
         try{
             byte[] data= Base64.getDecoder().decode(image.getData());
