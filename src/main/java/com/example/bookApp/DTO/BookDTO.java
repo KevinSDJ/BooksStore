@@ -11,12 +11,12 @@ public class BookDTO implements Serializable{
     private String sinopsis;
     private Double price;
     private String cover_path;
-    private String cover_front;
+    private BookImageDTO cover_front;
     
-    public String getCover_front() {
+    public BookImageDTO getCover_front() {
         return cover_front;
     }
-    public void setCover_front(String cover_front) {
+    public void setCover_front(BookImageDTO cover_front) {
         this.cover_front = cover_front;
     }
     public String getCover_path() {

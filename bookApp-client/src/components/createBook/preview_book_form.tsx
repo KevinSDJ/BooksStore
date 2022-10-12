@@ -1,15 +1,16 @@
 import ImageIcon from '/image_icon.webp'
-import { formV } from './types'
+import { dataFormValues } from '../../services/implements/admin.serviceImpl'
 import { useState ,useEffect} from 'react'
 
 
 
-export const PreviewBook=({cover_front,title,sinopsis,price}:formV)=>{
+export const PreviewBook=({cover_front,title,sinopsis,price}:dataFormValues)=>{
 
     return (
         <div className="flex flex-row max-w-full  w-full h-full rounded-lg overflow-hidden" >
             <div className="bg-white basis-3/6 flex items-center justify-center ">
-               <img className='w-4/6 max-h-full overflow-auto' src={cover_front?.toString()||ImageIcon} />
+               <img className='w-4/6 max-h-full overflow-auto' 
+               src={cover_front&&`data:${cover_front.type};base64,${cover_front.data}`||ImageIcon} />
             </div>
             <div className="max-h-full px-4  w-3/6">
                 <div className='text-gray-300 space-y-8 w-full mt-12 shrink'>

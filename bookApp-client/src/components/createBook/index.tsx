@@ -1,11 +1,10 @@
 import { Link } from "react-router-dom"
 import { useState } from "react"
 import {PreviewBook} from './preview_book_form'
-import { formV } from "./types"
-import { AdminService } from "../../services/implements/admin.serviceImpl"
+import { AdminService,dataFormValues } from "../../services/implements/admin.serviceImpl"
 
 const CreateBook = () => {
-    const [formValues,setFormValues] = useState<formV>({
+    const [formValues,setFormValues] = useState<dataFormValues>({
         title:'',
         sinopsis:'',
         price:0,
@@ -21,22 +20,29 @@ const CreateBook = () => {
     const handleChangeFile=(event:React.ChangeEvent<HTMLInputElement>)=>{
         const reader= new FileReader()
         let file = event?.currentTarget?.files?.item(0)
-        console.log(file?.name)
         if(file){
             reader.addEventListener("loadend",()=>{
-                setFormValues(prev=>{return{...prev,cover_front:reader.result||null}})
+                let data={
+                    nameFile:file?.name,
+                    type:file?.type,
+                    data:reader.result?.toString().split(",")[1]
+                }
+
+                console.log(reader.result)
+
+                setFormValues(prev=>{return {...prev,cover_front:data}})
+                
                 
             })
             reader.readAsDataURL(file)
-
-        }else{
             
+        }else{
             setFormValues(prev=>{return{...prev,cover_front:null}})
         }
     }
     const handleSubmit=(event:React.FormEvent<HTMLFormElement|HTMLFormControlsCollection>)=>{
         event.preventDefault()
-        AdminService.saveBook(formValues,()=>{console.log("soy un callback jeje")})
+        AdminService.saveBook(formValues,(d:any)=>{console.log(d)})
         
     }
 
