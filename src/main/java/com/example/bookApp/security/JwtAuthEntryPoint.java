@@ -1,6 +1,9 @@
 package com.example.bookApp.security;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,7 +19,7 @@ public class JwtAuthEntryPoint implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response,
             AuthenticationException authException) throws IOException, ServletException {
-        
+                
             log.error("Unauthorized error: {}", authException.getMessage());
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Error: Unauthorized");
     }

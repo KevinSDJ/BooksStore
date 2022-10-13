@@ -7,6 +7,7 @@ const Login = lazy(()=>import('./../components/login'))
 const Register= lazy(()=>import('./../components/register'))
 const NotFoundPage=lazy(()=>import('./NotFound'))
 const CreateBookPage =lazy(()=>import('./AddBooks'))
+const Dashboard= lazy(()=>import("./Dashboard"))
 
 function App() {
   return (
@@ -18,9 +19,13 @@ function App() {
              <Route path='' element={<Login/>}/>
              <Route path='signUp' element={<Register/>}/>
           </Route>
-          <Route path='/newbook' element={<div>sd</div>}/>
+
+          {/* Administration section */}
+          <Route path="admin" element={<Dashboard/>}>
+            <Route path="" element={<div><h1>Hadsdsd</h1></div>}/>
+            <Route path='add'element={<CreateBookPage/>} />
+          </Route>
           <Route path='*' element={<NotFoundPage/>} />
-          <Route path='/add'element={<CreateBookPage/>} />
         </Routes>
       </RouterApp>
     </Suspense>

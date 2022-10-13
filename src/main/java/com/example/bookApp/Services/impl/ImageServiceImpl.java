@@ -31,12 +31,16 @@ public class ImageServiceImpl implements ImageService {
 
         try{
             byte[] data= Base64.getDecoder().decode(image.getData());
-
+            
             file= new File(uploadFiles,image.getNameFile());
-            outWriteFile= new FileOutputStream(file);
-            outFile= new BufferedOutputStream(outWriteFile);
-            outFile.write(data);
-
+            if(!file.exists()){
+                outWriteFile= new FileOutputStream(file);
+                outFile= new BufferedOutputStream(outWriteFile);
+                outFile.write(data);
+            }else{
+                log.warn("File already exist, skip save");
+            }
+            
         }catch(Exception e){
             log.error(e.getMessage());
         }finally{
@@ -57,7 +61,7 @@ public class ImageServiceImpl implements ImageService {
         }
         
 
-        return image.getType()+"base64"+image.getNameFile();
+        return image.getNameFile();
     }
     
 }
