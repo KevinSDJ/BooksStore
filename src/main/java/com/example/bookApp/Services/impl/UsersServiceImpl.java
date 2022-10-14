@@ -5,10 +5,9 @@ import com.example.bookApp.DTO.TokenResponseDTO;
 import com.example.bookApp.DTO.UserDTO;
 import com.example.bookApp.Entities.Rol;
 import com.example.bookApp.Entities.User;
-import com.example.bookApp.Exceptions.EmailAlreadyExist;
+import com.example.bookApp.Exceptions.AlreadyExist;
 import com.example.bookApp.Exceptions.NotFound;
-import com.example.bookApp.Exceptions.PasswordInvalid;
-import com.example.bookApp.Exceptions.UsernameAlreadyExist;
+import com.example.bookApp.Exceptions.users.PasswordInvalid;
 import com.example.bookApp.Repositories.RolRepository;
 import com.example.bookApp.Repositories.UserRepository;
 import com.example.bookApp.Services.UserService;
@@ -108,10 +107,10 @@ public class UsersServiceImpl implements UserService {
         newUser.setPassword(passwordEncoder.encode(user.getPassword()));
         newUser.setRol(rol);
         if(userRepository.existByEmail(user.getEmail())){
-            throw new EmailAlreadyExist("Este email ya se encuentra en uso");
+            throw new AlreadyExist("email already in use, choose another");
         }
         if(userRepository.existByUsername(user.getUsername())){
-            throw new UsernameAlreadyExist("Nombre de usuario existente, eliga otro");
+            throw new AlreadyExist("username already in use, choose another");
         }
         return userRepository.save(newUser);
     }
@@ -126,10 +125,10 @@ public class UsersServiceImpl implements UserService {
             nuser.setRol(addrol);
         });
         if(userRepository.existByEmail(user.getEmail())){
-            throw new EmailAlreadyExist("Email ocupado, elige otro gil");
+            throw new AlreadyExist("email already in use, choose another");
         }
         if(userRepository.existByUsername(user.getUsername())){
-            throw new UsernameAlreadyExist("Nombre de usuario en uso");
+            throw new AlreadyExist("username already in use, choose another");
         }
         User us= userRepository.save(nuser);
         return us;

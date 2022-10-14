@@ -2,7 +2,7 @@ package com.example.bookApp.Services.impl;
 
 import com.example.bookApp.Entities.Rol;
 import com.example.bookApp.Exceptions.NotFound;
-import com.example.bookApp.Exceptions.RolAlreadyExist;
+import com.example.bookApp.Exceptions.AlreadyExist;
 import com.example.bookApp.Repositories.RolRepository;
 import com.example.bookApp.Services.RolesService;
 import org.slf4j.Logger;
@@ -44,7 +44,7 @@ public  class RolesServiceImpl implements RolesService {
             return rolRepository.saveAll(newRoles);
         }catch (Exception e){
             log.error("Error roles create:{}",e.getMessage());
-            throw new RolAlreadyExist("No puede haber roles duplicados");
+            throw new AlreadyExist("duplicate roles are not allowed");
         }
     }
 

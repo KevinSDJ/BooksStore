@@ -11,6 +11,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
+import javax.persistence.Column;
 
 @Entity
 @Table(name = "category")
@@ -19,6 +20,7 @@ public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(unique = true,nullable = false)
     private String name;
     @CreationTimestamp
     private LocalDateTime createDateTime;
