@@ -1,8 +1,5 @@
 package com.example.bookApp.RestControllers;
 
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,8 +18,6 @@ public class BooksController {
     @Autowired
     ImageServiceImpl imageServiceImpl;
     
-
-    private static final Logger log= LoggerFactory.getLogger(BooksController.class);
 
     @PostMapping("/book")
     public ResponseEntity<String> saveBook(@RequestBody BookDTO book ){

@@ -9,11 +9,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
+import com.example.bookApp.DTO.RequestLoginDTO;
+import com.example.bookApp.DTO.TokenResponseDTO;
 import com.example.bookApp.DTO.UserDTO;
 import com.example.bookApp.Services.impl.UsersServiceImpl;
-import com.example.bookApp.security.jwt.JwtUtil;
+
 
 @TestMethodOrder(OrderAnnotation.class)
 @SpringBootTest
@@ -25,8 +25,7 @@ class DemoApplicationTests {
 
 	String token=null;
 
-	@Autowired
-	JwtUtil jwtUtil;
+	
 
 	@Autowired
 	UsersServiceImpl userService;
@@ -36,21 +35,33 @@ class DemoApplicationTests {
 
 	@Test
 	@Order(1)
-	void register(){
-		userService.register(data);
+	void register() throws Exception{
+		try{
+			userService.register(data);
+		}catch(Exception e){
+			log.error("error test 1: {}", e.getMessage());
+			throw new Exception(e.getCause().toString());
+		}
+		
 	}
 
 	@Test
 	@Order(2)
-	void createToken(){
-		Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(data.getEmail(),data.getPassword()));
-		token =jwtUtil.generateToken(authentication);
-		log.info(token);
+	void login() throws Exception{
+		RequestLoginDTO user = new RequestLoginDTO(data.getEmail(),data.getPassword());
+		try{
+			TokenResponseDTO reponse= userService.login(user);
+			log.info("token reponse :{}",reponse);
+		}catch(Exception e){
+			log.error(e.getMessage());
+			throw new Exception(e);
+		}
+		
 	}
 
 	@Test
 	@Order(3)
-	void viewEmailFromToken(){
-			
+	void loadCategories(){
+		
 	}
 }
