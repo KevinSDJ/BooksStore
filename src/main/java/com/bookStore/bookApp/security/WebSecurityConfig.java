@@ -55,7 +55,7 @@ public class WebSecurityConfig{
     }
 
     @Bean
-    protected void configure(HttpSecurity http) throws Exception {
+    protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
        http.cors().and().csrf().disable()
        .exceptionHandling()
        .accessDeniedHandler(accessDenied)
