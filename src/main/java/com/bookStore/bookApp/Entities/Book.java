@@ -5,8 +5,12 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
+import java.util.HashSet;
+import java.util.Set;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 
@@ -23,7 +27,10 @@ public class Book {
     @Column(nullable = false)
     private Double price;
     @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
-    private Category category;
+    @JoinTable(name = "book_category",
+            joinColumns ={@JoinColumn(name = "book_id")},
+            inverseJoinColumns = {@JoinColumn(name= "category_id")})
+    private Set<Category> category= new HashSet<>();
     
 
     public Book(String title, String sinopsis, Double price) {

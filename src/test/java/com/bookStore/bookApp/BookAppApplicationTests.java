@@ -1,12 +1,20 @@
 package com.bookStore.bookApp;
 
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.authentication.AuthenticationManager;
+import com.bookStore.bookApp.DTO.RequestLoginDTO;
+import com.bookStore.bookApp.DTO.UserDTO;
+import com.bookStore.bookApp.Services.impl.UsersServiceImpl;
 
 @SpringBootTest
 class BookAppApplicationTests {
 
-	private static final Logger log = LoggerFactory.getLogger(DemoApplicationTests.class);
+	private static final Logger log = LoggerFactory.getLogger(BookAppApplicationTests.class);
 
 	UserDTO data = new UserDTO("kevin","kevin@gmail.com", "12345");
 
@@ -37,7 +45,7 @@ class BookAppApplicationTests {
 	void login() throws Exception{
 		RequestLoginDTO user = new RequestLoginDTO(data.getEmail(),data.getPassword());
 		try{
-			TokenResponseDTO reponse= userService.login(user);
+			com.bookStore.bookApp.DTO.TokenResponseDTO reponse= userService.login(user);
 			log.info("token reponse :{}",reponse);
 		}catch(Exception e){
 			log.error(e.getMessage());
